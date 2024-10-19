@@ -1,0 +1,37 @@
+.trackName{
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.infoContainer{
+    display: flex;
+    
+    color: grey;
+    margin-bottom: 10px; 
+    gap: 15px;
+    width: 90%;
+    overflow-x: hidden;
+}
+
+.track{
+    text-align: start;
+    position: relative;
+    padding: 10px 0;
+}
+
+.divider{
+    height: 1px;
+    width: 100%;
+    background-color: black;
+}
+
+.addBtn{
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    transform: translateY(-50%);
+    font-size: 25px;
+    font-weight: bolder;
+    cursor: pointer;
+}

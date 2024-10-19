@@ -1,0 +1,28 @@
+.btn{
+  border: none;
+
+}
+
+html{
+  overflow-x: hidden;
+}
+
+.App{
+  width: 100vw;
+  min-height: 100vh;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+main{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 75px;
+}
+
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}

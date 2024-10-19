@@ -1,0 +1,21 @@
+.btnSubmit{
+    background-color: #b7e842;
+    border: none;
+    padding: 10px 20px;
+    color: #222f03;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.inputSearch{
+    padding: 10px 10px;
+    border-radius: 10px;
+    width: 200px;
+    border: 1px solid grey;
+}
+
+form{
+    display: flex;
+    gap: 10px;
+}
