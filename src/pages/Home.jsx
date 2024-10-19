@@ -148,10 +148,11 @@ const Home = () => {
         {selectedTracks.length > 0 && (
           <>
           <label htmlFor="playListName">Name your playlist:</label>
-          <input id='playListName' value={playListName} onChange={(e)=>{setPlayListName(e.target.value)}} style={playListInputStyles} type="text" />
+          <input placeholder='Best Playlist' id='playListName' value={playListName} onChange={(e)=>{setPlayListName(e.target.value)}} style={playListInputStyles} type="text" />
           </>
         )}
 
+      
           {selectedTracks.map((track, id) => (
             <Track
               selected={true}  // Always show the minus for playlist
@@ -170,6 +171,10 @@ const Home = () => {
             Save to Spotify
           </button>
           )
+          }
+
+          {selectedTracks.length === 0 && 
+          (<p className='suggestion-text'>Add songs to your tracklist!</p>)
           }
           
         </TrackContainer>

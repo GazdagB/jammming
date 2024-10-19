@@ -31,8 +31,11 @@ function App() {
         setIsLoggedIn(true)
       }
     } else if (storedToken) {
-      setToken(storedToken); // Set the token from localStorage
+      setToken(storedToken);
+      setIsLoggedIn(true) // Set the token from localStorage
     }
+
+    
 
     setLoading(false);
   }, []);

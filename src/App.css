@@ -26,3 +26,12 @@ main{
 *{
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.btn{
+  border: none; 
+}
+
+.suggestion-text{
+  color: #cbcbcb;
+  font-weight: 600
+}
