@@ -1,143 +1,62 @@
 import './App.css';
-import SearchBar from './components/SearchBar';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
-import TrackContainer from './components/TrackContainer';
-import Track from './components/Track';
-import ResultTrack from './components/ResultTrack';
-import { useState } from 'react';
-
 
 function App() {
+  const CLIENT_ID = "56796ac4362e40ccae0bf92d56ea9b1e";
+  const REDIRECT_URI = "http://localhost:5173/";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
 
-  const mockedTracks = [
-    {
-      id: 0,
-      trackTitle: "Fistik",
-      artistName: "Murda",
-      albumName: "Fistik"
-    },
-    {
-      id: 1,
-      trackTitle: "Isztambul",
-      artistName: "Kiss Kevin",
-      albumName: "Isztambul"
-    },
-    {
-      id: 2,
-      trackTitle: "MEGGYFÁN",
-      artistName: "Beton.Hofi",
-      albumName: "0"
-    },
-    {
-      id: 3,
-      trackTitle: "Mámor",
-      artistName: "Pogány Indulo",
-      albumName: "Vagy mindent, vagy semmit"
-    },
-    {
-      id: 4,
-      trackTitle: "Cartier",
-      artistName: "KKevin & T. Danny",
-      albumName: "Nincs holnap"
-    },
-    {
-      id: 4,
-      trackTitle: "Cartier",
-      artistName: "KKevin & T. Danny",
-      albumName: "Nincs holnap"
-    },
-    {
-      id: 4,
-      trackTitle: "Cartier",
-      artistName: "KKevin & T. Danny",
-      albumName: "Nincs holnap"
-    },
-    {
-      id: 4,
-      trackTitle: "Cartier",
-      artistName: "KKevin & T. Danny",
-      albumName: "Nincs holnap"
-    },
-  ]
+  const [token, setToken] = useState('');
+  const [loading, setLoading] = useState(true);  // New loading state
+  const [isLoggedIn,setIsLoggedIn] = useState(false)
 
-  const [selectedTracks,setSelectedTracks] = useState([])
+  // Extract the access token from the URL hash and store it in localStorage
+  useEffect(() => {
+    const hash = window.location.hash;
+    let storedToken = window.localStorage.getItem("token");
 
-  function handleAddTrack(id) {
-    if (selectedTracks.find(track => track.id === id)) {
-      return;
+    // If there is no token in localStorage, extract it from the URL
+    if (!storedToken && hash) {
+      const tokenFromHash = new URLSearchParams(hash.substring(1)).get("access_token");
+
+      if (tokenFromHash) {
+        window.localStorage.setItem("token", tokenFromHash);
+        setToken(tokenFromHash);
+        window.location.hash = ''; // Clean up the URL by removing the hash
+        setIsLoggedIn(true)
+      }
+    } else if (storedToken) {
+      setToken(storedToken); // Set the token from localStorage
     }
-  
-    setSelectedTracks(prev => [...prev, mockedTracks[id]]);
-  }
 
-  function handleRemoveTrack(id) {
-    setSelectedTracks(prev => prev.filter(track => track.id !== id));
-  }
+    setLoading(false);
+  }, []);
 
-  const buttonStyles = {
-    backgroundColor: "#f230ac",
-    color: "#fff",
-    border: "none",
-    padding: "15px 20px",
-    borderRadius: "10px",
-    fontWeight: "bold",
-    marginTop: 10,
-    cursor: "pointer"
+ 
+  if (loading) {
+    return <div>Loading...</div>; 
   }
 
   return (
-    <div className='App'>
-    <Header />
-    <main>
-      <SearchBar />
-      <p>Add your favorite music to your spotify playlist below.</p>
-      <div style={{ display: "flex", alignItems: "start", gap: 30, marginTop: 30 }}>
-        {/* Results Container */}
-        <TrackContainer width={400} title={"Results"}>
-          {mockedTracks.map((track, id) => (
-            <ResultTrack
-              selected={selectedTracks.some(selectedTrack => selectedTrack.id === track.id)}  // Pass if selected or not
-              key={id}
-              onClickHandler={handleAddTrack}
-              id={track.id}
-              trackTitle={track.trackTitle}
-              artistName={track.artistName}
-              albumName={track.albumName}
-            />
-          ))}
-        </TrackContainer>
-
-        {/* Playlist Container */}
-        <TrackContainer width={350} title={"My playlist"}>
-
-        {selectedTracks.length > 0 && (
-          <input style={{marginBottom: 20}} type="text" />
-        )}
-
-          {selectedTracks.map((track, id) => (
-            <Track
-              selected={true}  // Always show the minus for playlist
-              key={id}
-              onClickHandler={handleRemoveTrack}
-              id={track.id}
-              trackTitle={track.trackTitle}
-              artistName={track.artistName}
-              albumName={track.albumName}
-            />
-          ))}
-
-          {selectedTracks.length > 0 &&
-          (
-          <button style={buttonStyles}>
-            Save to Spotify
-          </button>
-          )
-          }
-        </TrackContainer>
-      </div>
-    </main>
-  </div>
-  )
+    <Router>
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}></Header>
+      <Routes>
+        {/* If there's no token, show login */}
+        <Route path='/login' element={<Login auth={{ CLIENT_ID, REDIRECT_URI, AUTH_ENDPOINT, RESPONSE_TYPE }} />} />
+        
+        {/* If there is a token, show Home */}
+        <Route path='/' element={token ? <Home /> : <Login auth={{ CLIENT_ID, REDIRECT_URI, AUTH_ENDPOINT, RESPONSE_TYPE }} />} />
+        
+        {/* Catch-all redirects to home */}
+        <Route path='*' element={token ? <Home /> : <Login auth={{ CLIENT_ID, REDIRECT_URI, AUTH_ENDPOINT, RESPONSE_TYPE }} />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
