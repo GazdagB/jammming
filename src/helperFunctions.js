@@ -1,14 +1,24 @@
-import { getUserData } from "./apiMethodes";
+const getToken = async (getUserHelper,setToken,setIsLoggedIn,logIn) => {
+  const hash = window.location.hash;
+  console.log(hash);
+  
+  let storedToken = window.localStorage.getItem('token');
 
-async function getUserName(tokenFromHash,setUserName){
-    const userData = await getUserData(tokenFromHash);
-    if (userData) {
-      setUserName(userData.display_name); // Set the username if data is retrieved
+  if (!storedToken && hash) {
+    const tokenFromHash = new URLSearchParams(hash.substring(1)).get('access_token');
+    const expiresIn = new URLSearchParams(hash.substring(1)).get("expires_in");
+    const expiresAt = Date.now() + (expiresIn * 1000); // Set expiration to 10 seconds
+
+    if (tokenFromHash) {
+     
+      logIn(tokenFromHash,expiresAt)
     }
+  } else if (storedToken) {
+    //Getting User Data on Every Rerender of the page 
+    getUserHelper(storedToken)
+    setToken(storedToken);
+    setIsLoggedIn(true);
   }
+}
 
-  async function getUserProfilePicture(tokenFromHash) {
-    const userData = await getUserData(tokenFromHash)
-    
-  }
-  export {getUserName};
+export {getToken}

@@ -6,6 +6,7 @@ const Login = ({auth}) => {
 
   console.log(auth);
   
+  
 
   const containerStyles = {
     display: "flex",

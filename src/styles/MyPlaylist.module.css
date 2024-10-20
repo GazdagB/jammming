@@ -1,0 +1,57 @@
+.playlistInfoContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.albumCoverContainer {
+    position: relative; /* Positioning for the overlay */
+    width: 150px; /* Set a fixed width */
+    height: 150px; /* Set a fixed height */
+    border: 2px solid #ccc; /* Optional: Add a border */
+    border-radius: 8px; /* Optional: Rounded corners */
+    overflow: hidden; /* Ensure child elements don't overflow */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+.albumCover {
+    width: 100%; /* Full width of the container */
+    height: 100%; /* Full height of the container */
+    object-fit: cover; /* Make the image cover the entire rectangle */
+    object-position: center; /* Center the image */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    opacity: 0; /* Initially hidden */
+    display: flex; /* Center the icon */
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.albumCoverContainer:hover .albumCover {
+    filter: blur(2px); /* Blur effect on hover */
+}
+
+.albumCoverContainer:hover .overlay {
+    opacity: 1; /* Show overlay on hover */
+}
+
+.editIcon {
+    width: 24px; /* Set width for the icon */
+    height: 24px; /* Set height for the icon */
+}
+
+
+.discardImage{
+    cursor: pointer;
+    text-decoration: underline;
+}

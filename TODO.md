@@ -2,11 +2,11 @@
 
 ### Functionality 
 - [ ] Make it possible to play sample music
-- [ ] Display Spotify username and photo near log out text
-
+- [x] Display Spotify username and photo near log out text
 - [ ] Make a My Playlists page where a player can edit his tracks.
 - [x] Logg Out user after token expires
 - [ ] Adding succsessful playlist creation 
+- [x] Add a spinner loader 
 
 ### Best Pratice and Cleanup 
 - [ ] Tidy up codebase, make codbase dry

@@ -4,9 +4,8 @@ import Home from './pages/Home';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
-import axios from 'axios';
-import { getUserName } from './helperFunctions';
 import { getUserID, createPlaylist, addingTracksToPlaylist, handleSearch, getUserData} from './apiMethodes';
+import {getToken} from "./helperFunctions.js"
 
 function App() {
   const CLIENT_ID = '56796ac4362e40ccae0bf92d56ea9b1e';
@@ -103,29 +102,8 @@ function App() {
   }, [isLoggedIn]);
 
   
-  useEffect(() => {
-    const hash = window.location.hash;
-    console.log(hash);
-    
-    let storedToken = window.localStorage.getItem('token');
-
-    if (!storedToken && hash) {
-      const tokenFromHash = new URLSearchParams(hash.substring(1)).get('access_token');
-      const expiresIn = new URLSearchParams(hash.substring(1)).get("expires_in");
-      const expiresAt = Date.now() + (expiresIn * 1000); // Set expiration to 10 seconds
-
-      if (tokenFromHash) {
-       
-        logIn(tokenFromHash,expiresAt)
-      }
-    } else if (storedToken) {
-      //Getting User Data on Every Rerender of the page 
-      getUserHelper(storedToken)
-      setToken(storedToken);
-      setIsLoggedIn(true);
-      
-       // Set the token from localStorage
-    }
+  useEffect(()=>{
+    getToken(getUserHelper,setToken,setIsLoggedIn,logIn)
   }, []);
 
   return (
