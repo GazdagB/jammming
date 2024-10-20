@@ -1,13 +1,11 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
+
 
 const Login = ({auth}) => {
 
-  const {
-    CLIENT_ID,
-    REDIRECT_URI,
-    AUTH_ENDPOINT,
-    RESPONSE_TYPE
-  } = auth;
+  console.log(auth);
+  
 
   const containerStyles = {
     display: "flex",
@@ -32,7 +30,7 @@ const Login = ({auth}) => {
   return (
     <div style={containerStyles}>
         <h2 style={headingStyles}>You have to login Spotify first! 😊</h2>
-        <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>
+        <a href={auth}>
             <button className='btn' style={buttonStyles}>Login Spotify</button>
         </a>
     </div>

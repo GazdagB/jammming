@@ -5,6 +5,7 @@ import TrackContainer from '../components/TrackContainer';
 import ResultTrack from '../components/ResultTrack';
 import Track from '../components/Track';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 
@@ -68,22 +69,26 @@ const mockedTracks = [
   ]
 
 
-const Home = () => {
+const Home = ({search, setSearch, onSubmit, tracks, setTracks, submitPlaylist, playListName, setPlayListName,selectedTracks,setSelectedTracks}) => {
 
-    const [selectedTracks,setSelectedTracks] = useState([]);
-    const [playListName,setPlayListName] = useState(""); 
+    
+    
   
-    function handleAddTrack(id) {
-      if (selectedTracks.find(track => track.id === id)) {
+    function handleAddTrack(track) {
+      if (selectedTracks.find(currTrack => currTrack.id === track.id)) {
         return;
       }
     
-      setSelectedTracks(prev => [...prev, mockedTracks[id]]);
+      setSelectedTracks(prev => [track,...prev]);
+      console.log(track);
+      
     }
   
     function handleRemoveTrack(id) {
       setSelectedTracks(prev => prev.filter(track => track.id !== id));
     }
+
+  
   
     const buttonStyles = {
       backgroundColor: "#f230ac",
@@ -124,20 +129,21 @@ const Home = () => {
   return (
     <div className='App'>
     <main>
-      <SearchBar />
+      <SearchBar onSubmit={onSubmit} search={search} setSearch={setSearch} />
       <p>Add your favorite music to your spotify playlist below.</p>
       <div style={{ display: "flex", alignItems: "start", gap: 30, marginTop: 30 }}>
         {/* Results Container */}
-        <TrackContainer width={400} title={"Results"}>
-          {mockedTracks.map((track, id) => (
+        <TrackContainer width={600} title={"Results"}>
+          {tracks.map((track, id) => (
             <ResultTrack
-              selected={selectedTracks.some(selectedTrack => selectedTrack.id === track.id)}  // Pass if selected or not
+              selected={selectedTracks.some(selectedTrack => selectedTrack.id === track.id)}
+              imgSrc={track.album.images[0].url}  // Pass if selected or not
               key={id}
               onClickHandler={handleAddTrack}
-              id={track.id}
-              trackTitle={track.trackTitle}
-              artistName={track.artistName}
-              albumName={track.albumName}
+              track={track}
+              trackTitle={track.name}
+              artistName={track.artists[0].name}
+              albumName={track.album.name}
             />
           ))}
         </TrackContainer>
@@ -157,17 +163,18 @@ const Home = () => {
             <Track
               selected={true}  // Always show the minus for playlist
               key={id}
+              imgSrc={track.album.images[0].url}
               onClickHandler={handleRemoveTrack}
               id={track.id}
-              trackTitle={track.trackTitle}
-              artistName={track.artistName}
-              albumName={track.albumName}
+              trackTitle={track.name}
+              artistName={track.artists[0].name}
+              albumName={track.album.name}
             />
           ))}
 
           {selectedTracks.length > 0 &&
           (
-          <button style={buttonStyles}>
+          <button onClick={submitPlaylist} style={buttonStyles}>
             Save to Spotify
           </button>
           )

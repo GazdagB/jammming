@@ -18,6 +18,8 @@
     text-align: start;
     position: relative;
     padding: 10px 0;
+    display: flex;
+    gap: 30px;
 }
 
 .divider{
@@ -34,4 +36,8 @@
     font-size: 25px;
     font-weight: bolder;
     cursor: pointer;
+}
+
+.img{
+    width: 100px
 }

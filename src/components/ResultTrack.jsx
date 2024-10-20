@@ -1,25 +1,27 @@
 import React, { useEffect } from 'react'
 import styles from "../styles/Track.module.css"
 
-const ResultTrack = ({id,trackTitle, artistName, albumName, onClickHandler,selected}) => {
+const ResultTrack = ({track,trackTitle, artistName, albumName, onClickHandler,selected,imgSrc}) => {
     
     useEffect(()=>{
-        console.log(id);
-        
+        console.log(track.id);
     },[])
     
     
 
   return (
     <div className={styles.track}>
-        <p className={styles.trackName}>{trackTitle}</p>
-        <div className={styles.infoContainer}>
-            <p>{artistName} | Album: {albumName}</p>
+        <img className={styles.img} src={imgSrc} alt="" />
+        <div style={{width: "100%"}}>
+            <p className={styles.trackName}>{trackTitle}</p>
+            <div className={styles.infoContainer}>
+                <p>{artistName} | Album: {albumName}</p>
+            </div>
+            <p onClick={()=>{
+                onClickHandler(track)
+            }} className={styles.addBtn}>{!selected ? "+" : ""}</p>
+            <div className={styles.divider}></div>
         </div>
-        <p onClick={()=>{
-            onClickHandler(id)
-        }} className={styles.addBtn}>{!selected ? "+" : ""}</p>
-        <div className={styles.divider}></div>
     </div>
   )
 }

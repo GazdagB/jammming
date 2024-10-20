@@ -2,10 +2,16 @@
 import React from 'react'
 import styles from "../styles/SearchBar.module.css"
 
-const SearchBar = () => {
+const SearchBar = ({setSearch, search, onSubmit}) => {
+  
+  function handleSubmit(e){
+    e.preventDefault()
+    onSubmit(search)
+  }
+
   return (
-    <form className={styles.form} name='search-form'>
-        <input className={styles.inputSearch} placeholder='Type in song title...' name='search' id='query' type="text" />
+    <form onSubmit={handleSubmit} className={styles.form} name='search-form'>
+        <input value={search} onChange={(e)=> setSearch(e.target.value)} className={styles.inputSearch} placeholder='Type in song title...' name='search' id='query' type="text" />
         <button className={styles.btnSubmit} type='submit'>Search Song</button>
     </form>
   )
