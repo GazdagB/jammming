@@ -59,7 +59,7 @@ async function getUserID(token){
   }
 
   async function handleSearch(keyWord,setTracks, token,setIsLoading) {
-    keyWord.trim();
+    keyWord = keyWord.trim();
     if(keyWord === ""){
       return;
     }
