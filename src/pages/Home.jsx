@@ -135,8 +135,10 @@ const Home = ({search, setSearch, onSubmit, tracks, setTracks, submitPlaylist, p
       <div style={{ display: "flex", alignItems: "start", gap: 30, marginTop: 30 }}>
         {/* Results Container */}
         <TrackContainer width={600} title={"Results"}>
-          {(tracks.length === 0 ) && (<img src={spinner} className='loader'/>) }
+          {(tracks.length === 0 && isLoading ) && (<img src={spinner} className='loader'/>) }
           
+          {(!isLoading && tracks.length === 0) && (<p className='suggestion-text'>Tracks will appear hear if you search.</p>) }
+
           {tracks.map((track, id) => (
             <ResultTrack
               selected={selectedTracks.some(selectedTrack => selectedTrack.id === track.id)}
