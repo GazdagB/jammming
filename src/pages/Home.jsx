@@ -6,6 +6,7 @@ import ResultTrack from '../components/ResultTrack';
 import Track from '../components/Track';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import spinner from "../assets/spinner-solid.svg"
 
 
 
@@ -69,7 +70,7 @@ const mockedTracks = [
   ]
 
 
-const Home = ({search, setSearch, onSubmit, tracks, setTracks, submitPlaylist, playListName, setPlayListName,selectedTracks,setSelectedTracks}) => {
+const Home = ({search, setSearch, onSubmit, tracks, setTracks, submitPlaylist, playListName, setPlayListName,selectedTracks,setSelectedTracks,isLoading}) => {
 
     
     
@@ -134,6 +135,8 @@ const Home = ({search, setSearch, onSubmit, tracks, setTracks, submitPlaylist, p
       <div style={{ display: "flex", alignItems: "start", gap: 30, marginTop: 30 }}>
         {/* Results Container */}
         <TrackContainer width={600} title={"Results"}>
+          {(tracks.length === 0 ) && (<img src={spinner} className='loader'/>) }
+          
           {tracks.map((track, id) => (
             <ResultTrack
               selected={selectedTracks.some(selectedTrack => selectedTrack.id === track.id)}

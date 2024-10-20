@@ -35,3 +35,19 @@ main{
   color: #cbcbcb;
   font-weight: 600
 }
+
+.loader{
+ animation-name: loader;
+ animation-duration: 1.4s;
+ animation-iteration-count: infinite;
+ height: 50px;
+}
+
+@keyframes loader {
+  0% {
+    rotate: 0deg ;
+  }
+  100%{
+    rotate: 360deg;
+  }
+}
