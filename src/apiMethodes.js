@@ -14,6 +14,7 @@ async function getUserID(token){
     }
   }
 
+  
 
   async function createPlaylist(userId, playListName, token, ) {
 
@@ -104,4 +105,21 @@ async function getUserID(token){
     }
   }
 
-  export {getUserID, createPlaylist,addingTracksToPlaylist, handleSearch, getUserData}
+  async function addPlaylistAlbumCover(albumCover,playListId,token) {
+    const albumCoverBase64 = albumCover.replace(/^data:image\/jpeg;base64,/, '');
+
+  try {
+    await axios.put(`https://api.spotify.com/v1/playlists/${playListId}/images`, albumCoverBase64, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'image/jpeg',
+      },
+      maxContentLength: Infinity,  // Optionally ensure large payloads are handled
+      maxBodyLength: Infinity,
+    });
+  } catch (error) {
+    console.error("Couldn't create album cover: ", error);
+  }
+  }
+
+  export {getUserID, createPlaylist,addingTracksToPlaylist, handleSearch, getUserData,addPlaylistAlbumCover}

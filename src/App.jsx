@@ -5,14 +5,16 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import { getUserID, createPlaylist, addingTracksToPlaylist, handleSearch, getUserData} from './apiMethodes';
+import albumPlaceholder from "./assets/album_placeholder.png";
 import {getToken} from "./helperFunctions.js"
+import axios from 'axios';
 
 function App() {
   const CLIENT_ID = '56796ac4362e40ccae0bf92d56ea9b1e';
   const REDIRECT_URI = 'http://localhost:5173/';
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
   const RESPONSE_TYPE = 'token';
-  const SCOPE = 'playlist-modify-public playlist-modify-private';
+  const SCOPE = 'playlist-modify-public playlist-modify-private ugc-image-upload';
 
   const AUTH_URL = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
 
@@ -26,10 +28,14 @@ function App() {
     display_name: "",
   }); 
   const [isLoading,setIsLoading] = useState(false)
+  const [albumCover, setAlbumCover] = useState(albumPlaceholder);
 
   async function submitPlaylist() {
     let playListId;
 
+   
+
+   
     // Step 1: Getting UserID From Spotify API 
     const userId = await getUserID(token);
     console.log(`userId: ${userId}`);
@@ -38,12 +44,37 @@ function App() {
     playListId = await createPlaylist(userId, playListName, token);
     const selectedUris = selectedTracks.map((track) => track.uri);
 
+    
+
     // Step 3: Adding tracks To the Playlist 
     await addingTracksToPlaylist(playListId, selectedUris, token);
+
+   
+     
+  
+    const isCustomAlbumImage = albumCover !== albumPlaceholder;
+
+if (isCustomAlbumImage) {
+  let albumCoverBase64 =  albumCover.replace(/^data:image\/jpeg;base64,/, '');
+
+  try {
+    await axios.put(`https://api.spotify.com/v1/playlists/${playListId}/images`, albumCoverBase64, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'image/jpeg',
+      },
+      maxContentLength: Infinity,  // Optionally ensure large payloads are handled
+      maxBodyLength: Infinity,
+    });
+  } catch (error) {
+    console.error("Couldn't create album cover: ", error);
+  }
+}
 
     setSelectedTracks([]);
     setPlayListName('');
   }
+  
 
   function loggOut() {
     setIsLoggedIn(false); 
@@ -123,6 +154,8 @@ function App() {
             onSubmit={()=> handleSearch(search,setTracks,token,setIsLoading)}
             search={search}
             setSearch={setSearch}
+            albumCover={albumCover}
+            setAlbumCover={setAlbumCover}
           />
         ) : (
           <Login auth={AUTH_URL} />
@@ -139,6 +172,8 @@ function App() {
             onSubmit={()=> handleSearch(search,setTracks,token,setIsLoading)}
             search={search}
             setSearch={setSearch}
+            albumCover={albumCover}
+            setAlbumCover={setAlbumCover}
           />
         ) : (
           <Login auth={AUTH_URL} />

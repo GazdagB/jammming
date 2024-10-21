@@ -10,8 +10,8 @@ import albumPlaceholder from "../assets/album_placeholder.png";
 import editIcon from "../assets/edit-icon.svg"; // Make sure to import your edit icon
 import MyPlaylistStyles from "../styles/MyPlaylist.module.css";
 
-const Home = ({ search, setSearch, onSubmit, tracks, setTracks, submitPlaylist, playListName, setPlayListName, selectedTracks, setSelectedTracks, isLoading }) => {
-    const [albumCover, setAlbumCover] = useState(albumPlaceholder);
+const Home = ({ search, setSearch, onSubmit, tracks, setTracks, submitPlaylist, playListName, setPlayListName, selectedTracks, setSelectedTracks, isLoading, albumCover, setAlbumCover}) => {
+    
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
 
