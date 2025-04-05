@@ -14,4 +14,3 @@
 ### Styling 
 - [ ] Adding a background image to the page
 - [ ] Make it possible to add a custom playlist cover
-- [ ] Desing Spotify Login to look better 

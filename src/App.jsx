@@ -11,7 +11,7 @@ import axios from 'axios';
 
 function App() {
   const CLIENT_ID = '56796ac4362e40ccae0bf92d56ea9b1e';
-  const REDIRECT_URI = 'http://localhost:5173/';
+  const REDIRECT_URI = 'https://gb-jamming.netlify.app/';
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize';
   const RESPONSE_TYPE = 'token';
   const SCOPE = 'playlist-modify-public playlist-modify-private ugc-image-upload';
