@@ -44,7 +44,7 @@ const Header = ({ loggOut, isLoggedIn, userData }) => {
 
   function logOutHandler() {
     loggOut();
-    navigate('/login');
+    navigate('/');
   }
 
   return (
